@@ -1,242 +1,1472 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Venkatesh Annabathina - Portfolio</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Venkatesh Annabathina — keyvenslab</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600;700;900&family=DM+Mono:wght@300;400&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <style>
+        :root {
+            --bg: #F6F5F2;
+            --black: #0a0a0a;
+            --gray: #8a8a8a;
+            --mid: #3d3d3d;
+            --dim: #b0ada8;
+            --border: #e2dfd9;
+            --accent: #c05a35;
+            --canvas-bg: #F0EEE6;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
         body {
+            background: var(--bg);
+            color: var(--black);
             font-family: 'Inter', sans-serif;
-            background-color: #000000;
-            color: #E5E7EB; /* gray-200 */
+            font-weight: 300;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+            overflow-x: hidden;
+            cursor: none;
         }
-        /* Glassmorphism effect for cards */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease-in-out;
+
+        /* ── CURSOR ── */
+        #cur {
+            position: fixed;
+            width: 7px;
+            height: 7px;
+            background: var(--black);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform .2s;
         }
-        /* Enhanced glow and scale effect on hover */
-        .glow-hover:hover {
-            box-shadow: 0 0 25px rgba(255, 255, 255, 0.08);
-            transform: translateY(-5px);
-            border-color: rgba(255, 255, 255, 0.2);
+
+        #cur-r {
+            position: fixed;
+            width: 36px;
+            height: 36px;
+            border: 1px solid rgba(10, 10, 10, .2);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
         }
-        /* Scroll reveal animation */
-        .scroll-reveal {
+
+        ::-webkit-scrollbar {
+            width: 1px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--black);
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 500;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem 5vw;
+            background: rgba(246, 245, 242, .92);
+            backdrop-filter: blur(28px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-logo {
+            font-family: 'DM Mono', monospace;
+            font-size: .68rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--black);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-family: 'DM Mono', monospace;
+            font-size: .62rem;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--gray);
+            text-decoration: none;
+            transition: color .2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--black);
+        }
+
+        /* ── HERO SCROLL ── */
+        .hero-wrapper {
+            height: 500vh;
+        }
+
+        .hero-scene {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background: var(--bg);
+        }
+
+        .main-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .char {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 22vw;
+            line-height: .75;
+            letter-spacing: -.05em;
+            color: var(--black);
+            will-change: transform;
+            user-select: none;
+        }
+
+        .name-reveal {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            white-space: nowrap;
+            text-align: center;
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }   
-        .scroll-reveal.visible {
+            z-index: 1;
+        }
+
+        .full-name {
+            font-family: 'Inter', sans-serif;
+            font-size: 4.5vw;
+            font-weight: 900;
+            color: var(--black);
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .hero-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5vw;
+            font-weight: 300;
+            font-style: italic;
+            color: var(--gray);
+            letter-spacing: .05em;
+            margin-top: .6rem;
+        }
+
+        .quote-center {
+            position: absolute;
+            display: flex;
+            gap: 30px;
+            max-width: 600px;
+            opacity: 0;
+            z-index: 5;
+            pointer-events: none;
+            transform: translateY(50px);
+        }
+
+        .q-num {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 5.5rem;
+            line-height: .75;
+            letter-spacing: -.05em;
+            color: var(--gray);
+        }
+
+        .q-content {
+            display: flex;
+            flex-direction: column;
+            padding-top: 6px;
+        }
+
+        .q-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            font-style: italic;
+            margin-bottom: 6px;
+        }
+
+        .q-sub {
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.6;
+            color: var(--mid);
+        }
+
+        .hero-btns {
+            position: absolute;
+            bottom: 9%;
+            display: flex;
+            gap: 1.2rem;
+            opacity: 0;
+            transform: translateY(70px);
+        }
+
+        .btn-pill {
+            padding: 16px 44px;
+            border-radius: 100px;
+            font-size: .8rem;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all .28s cubic-bezier(.23, 1, .32, 1);
+            border: 1.5px solid var(--black);
+        }
+
+        .btn-pill.solid {
+            background: var(--black);
+            color: var(--bg);
+        }
+
+        .btn-pill.solid:hover {
+            background: var(--mid);
+            border-color: var(--mid);
+        }
+
+        .btn-pill.ghost {
+            background: transparent;
+            color: var(--black);
+        }
+
+        .btn-pill.ghost:hover {
+            background: var(--black);
+            color: var(--bg);
+        }
+
+        /* ── LAYOUT SYSTEM ── */
+        .page-section {
+            padding: 7rem 5vw;
+            max-width: 1160px;
+            margin: 0 auto;
+        }
+
+        .full-bleed {
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-top {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 4rem;
+        }
+
+        .section-index {
+            font-family: 'DM Mono', monospace;
+            font-size: .62rem;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--dim);
+        }
+
+        .section-name {
+            font-family: 'DM Mono', monospace;
+            font-size: .62rem;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--black);
+        }
+
+        .section-line {
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* ── REVEAL ── */
+        .r {
+            opacity: 0;
+            transform: translateY(22px);
+            transition: opacity .85s cubic-bezier(.22, 1, .36, 1), transform .85s cubic-bezier(.22, 1, .36, 1);
+        }
+
+        .r.on {
             opacity: 1;
-            transform: translateY(0);
+            transform: none;
         }
-        /* Custom background grid pattern */
-        .bg-grid {
-            background-image: linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
-            background-size: 40px 40px;
+
+        .r2 {
+            transition-delay: .1s;
         }
-        /* Make sure our icons from the CDN are white */
-        .icon-filter {
-            filter: invert(1);
+
+        .r3 {
+            transition-delay: .2s;
+        }
+
+        .r4 {
+            transition-delay: .3s;
+        }
+
+        /* ── ABOUT ── */
+        .about-layout {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 6rem;
+            align-items: start;
+        }
+
+        .about-h {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.6rem, 4.2vw, 3.8rem);
+            font-weight: 300;
+            line-height: 1.1;
+            letter-spacing: -.02em;
+        }
+
+        .about-h em {
+            font-style: italic;
+            color: var(--gray);
+        }
+
+        .about-body {
+            font-size: 1.05rem;
+            line-height: 1.9;
+            color: var(--mid);
+            margin-top: 1.8rem;
+        }
+
+        .about-body p+p {
+            margin-top: 1rem;
+        }
+
+        .about-body strong {
+            font-weight: 600;
+            color: var(--black);
+        }
+
+        .meta-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .meta-row {
+            border-top: 1px solid var(--border);
+            padding-top: 1.2rem;
+        }
+
+        .meta-k {
+            font-family: 'DM Mono', monospace;
+            font-size: .58rem;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--dim);
+            margin-bottom: .35rem;
+        }
+
+        .meta-v {
+            font-size: .95rem;
+            font-weight: 500;
+            color: var(--black);
+        }
+
+        /* ── ART BREAKS ── */
+        .art-break {
+            background: var(--canvas-bg);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 0;
+        }
+
+        .art-break canvas {
+            display: block;
+        }
+
+        .art-label {
+            font-family: 'DM Mono', monospace;
+            font-size: .6rem;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            color: var(--dim);
+            padding: 1.4rem 5vw;
+            align-self: flex-start;
+        }
+
+        .art-caption {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1rem;
+            color: var(--gray);
+            padding: 1.4rem 5vw 2.5rem;
+            line-height: 1.6;
+            align-self: flex-start;
+            max-width: 600px;
+        }
+
+        /* ── PULL QUOTE ── */
+        .pull-quote-wrap {
+            padding: 6rem 5vw;
+            max-width: 1160px;
+            margin: 0 auto;
+        }
+
+        .pull-quote {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.9rem, 3.8vw, 3.2rem);
+            font-weight: 300;
+            font-style: italic;
+            line-height: 1.35;
+            color: var(--mid);
+        }
+
+        .pull-quote strong {
+            font-style: normal;
+            font-weight: 600;
+            color: var(--black);
+        }
+
+        /* ── PROJECTS ── */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            background: var(--border);
+        }
+
+        .proj {
+            background: var(--bg);
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+            transition: background .3s;
+        }
+
+        .proj:hover {
+            background: #eeecea;
+        }
+
+        .proj-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--black);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .5s cubic-bezier(.22, 1, .36, 1);
+        }
+
+        .proj:hover .proj-bar {
+            transform: scaleX(1);
+        }
+
+        .proj-idx {
+            font-family: 'DM Mono', monospace;
+            font-size: .6rem;
+            letter-spacing: .16em;
+            color: var(--dim);
+            margin-bottom: 1.6rem;
+        }
+
+        .proj-name {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 1.35rem;
+            letter-spacing: -.03em;
+            margin-bottom: .8rem;
+        }
+
+        .proj-desc {
+            font-size: .88rem;
+            line-height: 1.8;
+            color: var(--mid);
+            margin-bottom: 1.6rem;
+        }
+
+        .proj-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .4rem;
+        }
+
+        .tag {
+            font-family: 'DM Mono', monospace;
+            font-size: .55rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            border: 1px solid var(--border);
+            padding: 4px 10px;
+            border-radius: 100px;
+            color: var(--gray);
+        }
+
+        /* ── SKILLS ── */
+        .skills-layout {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4rem;
+        }
+
+        .skill-cat {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: .9rem;
+            margin-bottom: 1.4rem;
+        }
+
+        .skill-items {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: .65rem;
+        }
+
+        .skill-items li {
+            font-size: .88rem;
+            color: var(--mid);
+            display: flex;
+            align-items: center;
+            gap: .7rem;
+        }
+
+        .skill-items li::before {
+            content: '—';
+            font-family: 'DM Mono', monospace;
+            font-size: .65rem;
+            color: var(--dim);
+            flex-shrink: 0;
+        }
+
+        /* ── BELIEFS ── */
+        .beliefs-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1px;
+            background: var(--border);
+        }
+
+        .belief {
+            background: var(--bg);
+            padding: 2.8rem;
+            transition: background .3s;
+        }
+
+        .belief:hover {
+            background: #eeecea;
+        }
+
+        .belief-n {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 3.5rem;
+            color: var(--border);
+            letter-spacing: -.05em;
+            line-height: 1;
+            margin-bottom: 1.4rem;
+            transition: color .3s;
+        }
+
+        .belief:hover .belief-n {
+            color: var(--dim);
+        }
+
+        .belief-t {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-bottom: .75rem;
+        }
+
+        .belief-b {
+            font-size: .85rem;
+            line-height: 1.8;
+            color: var(--mid);
+        }
+
+        /* ── ACHIEVEMENTS ── */
+        .ach-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ach-row {
+            display: grid;
+            grid-template-columns: 70px 1fr auto;
+            align-items: center;
+            gap: 2.5rem;
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--border);
+            transition: background .2s;
+        }
+
+        .ach-yr {
+            font-family: 'DM Mono', monospace;
+            font-size: .65rem;
+            letter-spacing: .1em;
+            color: var(--dim);
+        }
+
+        .ach-title {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .ach-sub {
+            font-size: .8rem;
+            color: var(--gray);
+            margin-top: 3px;
+        }
+
+        .ach-badge {
+            font-family: 'DM Mono', monospace;
+            font-size: .58rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            border: 1px solid var(--border);
+            padding: 5px 14px;
+            border-radius: 100px;
+            color: var(--mid);
+            white-space: nowrap;
+        }
+
+        /* ── HOBBIES ── */
+        .hobbies-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .8rem;
+        }
+
+        .hobby {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            padding: 11px 20px;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: .85rem;
+            color: var(--mid);
+            transition: all .25s;
+        }
+
+        .hobby:hover {
+            background: var(--black);
+            color: var(--bg);
+            border-color: var(--black);
+        }
+
+        /* ── VISION ── */
+        .vision-big {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 4.5vw, 3.8rem);
+            font-weight: 300;
+            line-height: 1.25;
+            letter-spacing: -.02em;
+            max-width: 860px;
+        }
+
+        .vision-big em {
+            font-style: italic;
+            color: var(--gray);
+        }
+
+        .vision-big strong {
+            font-weight: 600;
+            color: var(--black);
+        }
+
+        /* ── CONTACT ── */
+        .contact-h {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(3rem, 7vw, 6rem);
+            font-weight: 300;
+            line-height: 1.05;
+            letter-spacing: -.03em;
+            margin-bottom: 3rem;
+        }
+
+        .contact-h em {
+            font-style: italic;
+            color: var(--gray);
+        }
+
+        .contact-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .c-link {
+            display: flex;
+            align-items: center;
+            gap: .55rem;
+            text-decoration: none;
+            color: var(--black);
+            font-size: .85rem;
+            font-weight: 600;
+            padding: 13px 28px;
+            border: 1.5px solid var(--black);
+            border-radius: 100px;
+            transition: all .25s;
+            letter-spacing: .04em;
+        }
+
+        .c-link:hover {
+            background: var(--black);
+            color: var(--bg);
+        }
+
+        .c-link svg {
+            width: 15px;
+            height: 15px;
+            flex-shrink: 0;
+        }
+
+        .c-email {
+            font-family: 'DM Mono', monospace;
+            font-size: .78rem;
+            letter-spacing: .06em;
+            color: var(--gray);
+            text-decoration: none;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 2px;
+            transition: color .2s, border-color .2s;
+        }
+
+        .c-email:hover {
+            color: var(--black);
+            border-color: var(--black);
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            padding: 2.5rem 5vw;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border);
+        }
+
+        .f-copy {
+            font-family: 'DM Mono', monospace;
+            font-size: .6rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--gray);
+        }
+
+        .f-brand {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: .72rem;
+            letter-spacing: .04em;
+            color: var(--dim);
+        }
+
+        @media(max-width:768px) {
+            nav {
+                padding: 1.2rem 5vw;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .about-layout,
+            .skills-layout,
+            .beliefs-layout {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ach-row {
+                grid-template-columns: 1fr;
+                gap: .4rem;
+            }
+
+            .page-section {
+                padding: 5rem 5vw;
+            }
+
+            .char {
+                font-size: 35vw;
+            }
+
+            .full-name {
+                font-size: 7vw;
+            }
         }
     </style>
 </head>
-<body class="antialiased">
 
-    <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" id="navbar">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-xl font-bold tracking-wider text-white">VA</a>
-            <nav class="hidden md:flex space-x-8">
-                <a href="#about" class="text-gray-300 hover:text-white transition-colors duration-300">About</a>
-                <a href="#skills" class="text-gray-300 hover:text-white transition-colors duration-300">Skills</a>
-                <a href="#projects" class="text-gray-300 hover:text-white transition-colors duration-300">Projects</a>
-                <a href="#languages" class="text-gray-300 hover:text-white transition-colors duration-300">Languages</a>
-                <a href="#interests" class="text-gray-300 hover:text-white transition-colors duration-300">Interests</a>
-            </nav>
-            <a href="#contact" class="hidden md:block bg-gray-200 text-black font-semibold py-2 px-4 rounded-lg hover:bg-white transition-all duration-300">Contact</a>
+<body>
+
+    <div id="cur"></div>
+    <div id="cur-r"></div>
+
+    <!-- ══ NAV ══ -->
+    <nav>
+        <a class="nav-logo" href="#">keyvenslab</a>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#beliefs">Beliefs</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- ══ HERO ══ -->
+    <div class="hero-wrapper">
+        <section class="hero-scene">
+            <div class="main-container">
+                <div class="char v-char">V</div>
+                <div class="name-reveal">
+                    <div class="full-name">Venkatesh Annabathina</div>
+                    <div class="hero-subtitle">builder · thinker · legacy maker</div>
+                </div>
+                <div class="char a-char">A</div>
+            </div>
+            <div class="quote-center">
+                <div class="q-num">01</div>
+                <div class="q-content">
+                    <div class="q-title">curse of being a human.</div>
+                    <div class="q-sub">think too endlessly, and<br>never fully understand either.</div>
+                </div>
+            </div>
+            <div class="hero-btns">
+                <a href="#projects" class="btn-pill solid">View Work</a>
+                <a href="#contact" class="btn-pill ghost">Let's Talk</a>
+            </div>
+        </section>
+    </div>
+
+    <!-- ══ ABOUT ══ -->
+    <div id="about" style="border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+        <div class="page-section">
+            <div class="section-top r"><span class="section-index">00</span><span class="section-name">About</span><span
+                    class="section-line"></span></div>
+            <div class="about-layout">
+                <div>
+                    <h2 class="about-h r">I build things that<br><em>should exist</em><br>but don't yet.</h2>
+                    <div class="about-body r r2">
+                        <p>I'm Venkatesh Annabathina — a second-year CSE student at Lovely Professional University,
+                            Punjab. Online I go by <strong>KV</strong> or <strong>keyvenslab</strong>.</p>
+                        <p>I build at the intersection of AI, 3D worlds, and human experience. Not to flex — because I
+                            genuinely believe technology should leave the world <strong>measurably better</strong> than
+                            it found it.</p>
+                        <p>From agentic AI systems to immersive 3D environments, everything I ship carries one north
+                            star: <strong>leave a legacy.</strong></p>
+                    </div>
+                </div>
+                <div class="meta-stack r r3">
+                    <div class="meta-row">
+                        <div class="meta-k">University</div>
+                        <div class="meta-v">Lovely Professional University, Punjab</div>
+                    </div>
+                    <div class="meta-row">
+                        <div class="meta-k">Degree</div>
+                        <div class="meta-v">B.Tech — Computer Science Engineering</div>
+                    </div>
+                    <div class="meta-row">
+                        <div class="meta-k">Year</div>
+                        <div class="meta-v">2nd Year · 2023 – 2027</div>
+                    </div>
+                    <div class="meta-row">
+                        <div class="meta-k">Domains</div>
+                        <div class="meta-v">Agentic AI · 3D Tech · Full-Stack · DevOps · ML</div>
+                    </div>
+                    <div class="meta-row">
+                        <div class="meta-k">Home</div>
+                        <div class="meta-v">Andhra Pradesh · Based in Phagwara, Punjab</div>
+                    </div>
+                    <div class="meta-row">
+                        <div class="meta-k">Handle</div>
+                        <div class="meta-v">@keyvenslab</div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </header>
+    </div>
 
-    <main>
-        <section id="home" class="min-h-screen flex items-center justify-center text-center bg-grid">
-            <div class="container mx-auto px-6">
-                <div class="max-w-4xl mx-auto">
-                    <img 
-                      src="myphoto.jpg" 
-                      alt="Venkatesh Annabathina" 
-                      class="w-40 h-40 md:w-48 md:h-48 rounded-full mx-auto mb-8 border-4 border-gray-800 shadow-2xl object-cover"
-                      onerror="this.onerror=null; this.src='https://placehold.co/192x192/E5E7EB/000000?text=VA';">
-                    <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-4">
-                        Venkatesh Annabathina
-                    </h1>
-                    <p class="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto">
-                        Computer Science Student exploring the intersection of AI, Game Development, and Human Consciousness.
-                    </p>
+    <!-- ══ ART BREAK 1 — VERTICAL BARS ══ -->
+    <div class="art-break">
+        <div class="art-label">— Pattern I · Inexhaustible Flow</div>
+        <canvas id="barsCanvas" width="1200" height="320"></canvas>
+        <div class="art-caption">"Complexity resolves into fluid motion. Effortless transformation."</div>
+    </div>
+
+    <!-- ══ PULL QUOTE ══ -->
+    <div style="border-bottom:1px solid var(--border);">
+        <div class="pull-quote-wrap">
+            <p class="pull-quote r">"I believe anything I create should be of <strong>greater benefit to
+                    humanity</strong> — something noble. Something that <strong>outlives the moment</strong> it was
+                made."</p>
+        </div>
+    </div>
+
+    <!-- ══ PROJECTS ══ -->
+    <div id="projects" style="border-bottom:1px solid var(--border);">
+        <div class="page-section" style="padding-bottom:0;">
+            <div class="section-top r"><span class="section-index">01</span><span
+                    class="section-name">Projects</span><span class="section-line"></span></div>
+        </div>
+        <div class="projects-grid">
+            <div class="proj r">
+                <div class="proj-bar"></div>
+                <div class="proj-idx">01 / 04</div>
+                <div class="proj-name">24-Live AI News Reporter</div>
+                <div class="proj-desc">A real-time 3D AI news anchor with full VRM lip-sync, live news ingestion from
+                    NewsAPI & BBC RSS, and a complete voice pipeline via Groq/Llama-3.3 + Edge TTS. The future of news,
+                    rendered in 3D.</div>
+                <div class="proj-tags"><span class="tag">React</span><span class="tag">Three.js</span><span
+                        class="tag">FastAPI</span><span class="tag">VRM</span><span class="tag">Groq</span><span
+                        class="tag">Edge TTS</span></div>
+            </div>
+            <div class="proj r r2">
+                <div class="proj-bar"></div>
+                <div class="proj-idx">02 / 04</div>
+                <div class="proj-name">Little Big 3D World</div>
+                <div class="proj-desc">An interactive 3D world where you talk to AI NPCs powered by ChatGPT and Llama in
+                    real time. Voice via ElevenLabs, state via Zustand. A living world with NPCs that actually think and
+                    respond.</div>
+                <div class="proj-tags"><span class="tag">React Three Fiber</span><span class="tag">Zustand</span><span
+                        class="tag">ElevenLabs</span><span class="tag">Gemini 2.0</span><span
+                        class="tag">OpenRouter</span></div>
+            </div>
+            <div class="proj r r3">
+                <div class="proj-bar"></div>
+                <div class="proj-idx">03 / 04</div>
+                <div class="proj-name">Agent Memory Compressor</div>
+                <div class="proj-desc">An OpenEnv RL environment that trains agents to compress and recall long-context
+                    memories. Built for META × SCALER OpenEnv Hackathon. Docker-native, deployed to HuggingFace Spaces.
+                </div>
+                <div class="proj-tags"><span class="tag">Python</span><span class="tag">OpenEnv</span><span
+                        class="tag">Docker</span><span class="tag">RL</span><span class="tag">HuggingFace</span></div>
+            </div>
+            <div class="proj r r4">
+                <div class="proj-bar"></div>
+                <div class="proj-idx">04 / 04</div>
+                <div class="proj-name">Study Studio</div>
+                <div class="proj-desc">A focused AI-powered study companion combining spaced repetition with an AI tutor
+                    layer. Built for students who are serious about their future. Distraction-free by design.</div>
+                <div class="proj-tags"><span class="tag">React</span><span class="tag">FastAPI</span><span
+                        class="tag">AI</span><span class="tag">Full-Stack</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ ART BREAK 2 — YIN YANG WAVES ══ -->
+    <div class="art-break">
+        <div class="art-label">— Pattern II · Present Awareness</div>
+        <canvas id="yinCanvas" width="1200" height="380"></canvas>
+        <div class="art-caption">"Doing without expectation. Leading without control. Each frame arising naturally."
+        </div>
+    </div>
+
+    <!-- ══ SKILLS ══ -->
+    <div id="skills" style="border-bottom:1px solid var(--border);">
+        <div class="page-section">
+            <div class="section-top r"><span class="section-index">02</span><span class="section-name">Skills &
+                    Stack</span><span class="section-line"></span></div>
+            <div class="skills-layout">
+                <div class="r">
+                    <div class="skill-cat">AI & Agents</div>
+                    <ul class="skill-items">
+                        <li>Agentic Systems & Workflows</li>
+                        <li>LLMs — Groq, Llama, Gemini</li>
+                        <li>Reinforcement Learning</li>
+                        <li>ML / Data Science</li>
+                        <li>Prompt Engineering</li>
+                    </ul>
+                </div>
+                <div class="r r2">
+                    <div class="skill-cat">Frontend & 3D</div>
+                    <ul class="skill-items">
+                        <li>React + Vite</li>
+                        <li>Three.js / React Three Fiber</li>
+                        <li>VRM Lip-Sync & Expressions</li>
+                        <li>Blender</li>
+                        <li>Unity</li>
+                    </ul>
+                </div>
+                <div class="r r3">
+                    <div class="skill-cat">Backend & DevOps</div>
+                    <ul class="skill-items">
+                        <li>FastAPI + Python</li>
+                        <li>Docker & Containers</li>
+                        <li>GitHub Actions (CI/CD)</li>
+                        <li>REST APIs</li>
+                        <li>Railway · HuggingFace Spaces</li>
+                    </ul>
                 </div>
             </div>
-        </section>
+        </div>
+    </div>
 
-        <section id="about" class="py-20 md:py-32 scroll-reveal">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-white">About Me</h2>
-                    <div class="w-20 h-1 bg-gray-700 mx-auto mt-4"></div>
-                </div>
-                <div class="max-w-3xl mx-auto text-center text-gray-300 text-lg leading-relaxed">
-                    <p class="mb-6">
-                        I'm a second-year B.Tech Computer Science student with a deep curiosity for how technology can extend human capabilities. My journey is driven by a passion for building things, whether it's through code, creative doodling, or hands-on projects.
-                    </p>
-                    <p>
-                        When I'm not programming or studying, you can find me at the gym, sketching ideas, or diving into new personal projects just for the fun of discovery.
-                    </p>
-                </div>
-            </div>
-        </section>
+    <!-- ══ ART BREAK 3 — GLOWING EYE / YIN-YANG PARTICLES ══ -->
+    <div class="art-break"
+        style="flex-direction:row; justify-content:space-between; align-items:stretch; flex-wrap:wrap;">
+        <div style="display:flex; flex-direction:column; justify-content:center; padding:4rem 5vw; max-width:440px;">
+            <div class="art-label" style="padding:0; margin-bottom:1.5rem;">— Pattern III · Convergence</div>
+            <p
+                style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.35rem; line-height:1.6; color:var(--mid);">
+                "Strength without violence.<br>Victory without anger.<br>Power that emerges<br>through harmony."</p>
+        </div>
+        <canvas id="eyeCanvas" width="480" height="480" style="flex-shrink:0;"></canvas>
+    </div>
 
-        <section id="skills" class="py-20 md:py-32 bg-black/[0.4] scroll-reveal">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-white">My Toolkit</h2>
-                    <p class="text-gray-400 mt-2">Technologies I work with.</p>
+    <!-- ══ ACHIEVEMENTS ══ -->
+    <div id="achievements" style="border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+        <div class="page-section">
+            <div class="section-top r"><span class="section-index">03</span><span
+                    class="section-name">Achievements</span><span class="section-line"></span></div>
+            <div class="ach-list">
+                <div class="ach-row r">
+                    <div class="ach-yr">2026</div>
+                    <div>
+                        <div class="ach-title">META × SCALER OpenEnv Hackathon</div>
+                        <div class="ach-sub">Round 1 — Agent Memory Compressor Environment</div>
+                    </div>
+                    <div class="ach-badge">Active</div>
                 </div>
-                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 max-w-6xl mx-auto">
-                    <div class="glass-card p-6 rounded-xl flex flex-col items-center text-center glow-hover"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/python.svg" class="w-16 h-16 mb-4 icon-filter" alt="Python"><h3 class="font-semibold text-white">Python</h3></div>
-                    <div class="glass-card p-6 rounded-xl flex flex-col items-center text-center glow-hover"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/cplusplus.svg" class="w-16 h-16 mb-4 icon-filter" alt="C++"><h3 class="font-semibold text-white">C++</h3></div>
-                    <div class="glass-card p-6 rounded-xl flex flex-col items-center text-center glow-hover"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/c.svg" class="w-16 h-16 mb-4 icon-filter" alt="C Language"><h3 class="font-semibold text-white">C</h3></div>
-                    <div class="glass-card p-6 rounded-xl flex flex-col items-center text-center glow-hover"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/mysql.svg" class="w-16 h-16 mb-4 icon-filter" alt="MySQL"><h3 class="font-semibold text-white">MySQL</h3></div>
-                    <div class="glass-card p-6 rounded-xl flex flex-col items-center text-center glow-hover"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/postgresql.svg" class="w-16 h-16 mb-4 icon-filter" alt="PL/pgSQL"><h3 class="font-semibold text-white">PL/pgSQL</h3></div>
-                    <div class="glass-card p-6 rounded-xl flex flex-col items-center text-center glow-hover"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/androidstudio.svg" class="w-16 h-16 mb-4 icon-filter" alt="Android Studio"><h3 class="font-semibold text-white">Android Studio</h3></div>
-                    <div class="glass-card p-6 rounded-xl flex flex-col items-center text-center glow-hover"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/unity.svg" class="w-16 h-16 mb-4 icon-filter" alt="Unity"><h3 class="font-semibold text-white">Unity & C#</h3></div>
-                    <div class="glass-card p-6 rounded-xl flex flex-col items-center text-center glow-hover"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/html5.svg" class="w-16 h-16 mb-4 icon-filter" alt="HTML5"><h3 class="font-semibold text-white">HTML, CSS, JS</h3><p class="text-xs text-gray-400">(Familiar)</p></div>
-                </div>
-            </div>
-        </section>
-
-        <section id="projects" class="py-20 md:py-32 scroll-reveal">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-white">Projects</h2>
-                    <p class="text-gray-400 mt-2">Creations from my journey so far.</p>
-                </div>
-                <div class="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
-                    <div class="glass-card rounded-xl overflow-hidden glow-hover group">
-                        <div class="p-8">
-                            <h3 class="text-2xl font-bold text-white mb-2">3D Interface AI</h3>
-                            <p class="text-gray-400 mb-6">An exploration into creating intuitive, three-dimensional user interfaces powered by artificial intelligence. The goal is to make human-computer interaction more natural and immersive.</p>
-                            <a href="#" class="inline-block text-gray-300 font-semibold group-hover:text-white transition-colors duration-300">View Details &rarr;</a>
+                <div class="ach-row r r2">
+                    <div class="ach-yr">2026</div>
+                    <div>
+                        <div class="ach-title">Google — The Big Code</div>
+                        <div class="ach-sub">5-round national competition · HackerEarth · Finals at Google Bengaluru
                         </div>
                     </div>
-                    <div class="glass-card rounded-xl overflow-hidden glow-hover group">
-                        <div class="p-8">
-                            <h3 class="text-2xl font-bold text-white mb-2">Personal Portfolio</h3>
-                            <p class="text-gray-400 mb-6">A responsive and aesthetically-pleasing personal website built with HTML and Tailwind CSS to showcase my skills, projects, and journey. You're looking at it right now!</p>
-                            <a href="https://github.com/venkateshannabathina" target="_blank" rel="noopener noreferrer" class="inline-block text-gray-300 font-semibold group-hover:text-white transition-colors duration-300">View Source Code &rarr;</a>
-                        </div>
+                    <div class="ach-badge">Participant</div>
+                </div>
+                <div class="ach-row r r3">
+                    <div class="ach-yr">2025</div>
+                    <div>
+                        <div class="ach-title">24-Live AI News Reporter</div>
+                        <div class="ach-sub">Full-stack 3D AI anchor with live news pipeline & VRM lip-sync</div>
                     </div>
+                    <div class="ach-badge">Shipped</div>
+                </div>
+                <div class="ach-row r r4">
+                    <div class="ach-yr">2025</div>
+                    <div>
+                        <div class="ach-title">Little Big 3D World</div>
+                        <div class="ach-sub">Interactive AI NPC 3D world with real-time voice</div>
+                    </div>
+                    <div class="ach-badge">Shipped</div>
                 </div>
             </div>
-        </section>
-
-        <section id="languages" class="py-20 md:py-32 bg-black/[0.4] scroll-reveal">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-white">Languages</h2>
-                    <p class="text-gray-400 mt-2">How I communicate with the world.</p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-5xl mx-auto text-center">
-                    <div class="glass-card p-6 rounded-xl glow-hover">
-                        <h3 class="text-xl font-semibold text-white">English</h3>
-                        <p class="text-gray-400">Professional Fluency</p>
-                    </div>
-                    <div class="glass-card p-6 rounded-xl glow-hover">
-                        <h3 class="text-xl font-semibold text-white">Hindi</h3>
-                        <p class="text-gray-400">Professional Fluency</p>
-                    </div>
-                    <div class="glass-card p-6 rounded-xl glow-hover">
-                        <h3 class="text-xl font-semibold text-white">Telugu</h3>
-                        <p class="text-gray-400">Native</p>
-                    </div>
-                    <div class="glass-card p-6 rounded-xl glow-hover">
-                        <h3 class="text-xl font-semibold text-white">Japanese</h3>
-                        <p class="text-gray-400">Beginner (Learning)</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="interests" class="py-20 md:py-32 scroll-reveal">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-white">Intellectual Interests</h2>
-                    <p class="text-gray-400 mt-2">The big questions that fuel my curiosity.</p>
-                </div>
-                <div class="max-w-4xl mx-auto space-y-8">
-                    <div class="glass-card p-6 rounded-xl"><h3 class="font-bold text-xl text-white">Consciousness of the Human Mind</h3><p class="text-gray-400 mt-1">Exploring the nature of consciousness, self-awareness, and how these complex phenomena arise from biological processes.</p></div>
-                    <div class="glass-card p-6 rounded-xl"><h3 class="font-bold text-xl text-white">Full Capability of Artificial Intelligence</h3><p class="text-gray-400 mt-1">Investigating the theoretical limits and future potential of AI, from artificial general intelligence (AGI) to superintelligence.</p></div>
-                    <div class="glass-card p-6 rounded-xl"><h3 class="font-bold text-xl text-white">Robotics & Neuroscience</h3><p class="text-gray-400 mt-1">Fascinated by the synergy between creating intelligent machines and understanding the neural mechanisms that govern our own bodies and minds.</p></div>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <footer id="contact" class="pt-24 pb-16 bg-black">
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="text-3xl font-bold text-white mb-4">Get In Touch</h2>
-            <p class="text-gray-400 mb-8 max-w-lg mx-auto">I'm always open to discussing new projects, creative ideas, or opportunities. Feel free to reach out.</p>
-            
-            <div class="flex flex-col items-center justify-center space-y-2 mb-10">
-                 <a href="mailto:venkateshannbathina96@gmail.com" class="text-lg text-gray-300 hover:text-white transition-colors duration-300">venkateshannbathina96@gmail.com</a>
-                 <a href="tel:+917207474421" class="text-lg text-gray-300 hover:text-white transition-colors duration-300">+91 72074 74421</a>
-            </div>
-
-            <div class="flex justify-center space-x-6 text-gray-400">
-                <a href="https://github.com/venkateshannabathina" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors duration-300">GitHub</a>
-                <a href="https://www.linkedin.com/in/venkatesh-annabathina-893066323/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors duration-300">LinkedIn</a>
-            </div>
-            <p class="text-gray-600 text-sm mt-12">&copy; 2025 Venkatesh Annabathina. All rights reserved.</p>
         </div>
+    </div>
+
+    <!-- ══ BELIEFS ══ -->
+    <div id="beliefs" style="border-bottom:1px solid var(--border);">
+        <div class="page-section" style="padding-bottom:0;">
+            <div class="section-top r"><span class="section-index">04</span><span class="section-name">Ethics &
+                    Beliefs</span><span class="section-line"></span></div>
+        </div>
+        <div class="beliefs-layout">
+            <div class="belief r">
+                <div class="belief-n">01</div>
+                <div class="belief-t">Technology must serve humanity</div>
+                <div class="belief-b">Every line of code I write should make someone's life meaningfully better. Not
+                    just smarter or faster — genuinely better. That's the only metric that matters at the end.</div>
+            </div>
+            <div class="belief r r2">
+                <div class="belief-n">02</div>
+                <div class="belief-t">Integrity over applause</div>
+                <div class="belief-b">I'd rather build something honest and hard than something flashy and hollow. The
+                    work should speak for itself. If it doesn't, I wasn't done yet.</div>
+            </div>
+            <div class="belief r r3">
+                <div class="belief-n">03</div>
+                <div class="belief-t">Legacy is built in silence</div>
+                <div class="belief-b">Greatness isn't announced — it's accumulated. Every commit, every late night,
+                    every bug fixed is a brick. The building takes time. I'm patient.</div>
+            </div>
+            <div class="belief r">
+                <div class="belief-n">04</div>
+                <div class="belief-t">AI should feel human</div>
+                <div class="belief-b">My long-term dream is to build the most realistic, human-like AI the world has
+                    ever seen — one that doesn't just process, but genuinely connects. Emotion is not a bug.</div>
+            </div>
+            <div class="belief r r2">
+                <div class="belief-n">05</div>
+                <div class="belief-t">Never stop learning</div>
+                <div class="belief-b">From Vedic mathematics to reinforcement learning, Blender to Docker — I treat
+                    every domain as a room I haven't fully explored yet. Curiosity is non-negotiable.</div>
+            </div>
+            <div class="belief r r3">
+                <div class="belief-n">06</div>
+                <div class="belief-t">Balance is power</div>
+                <div class="belief-b">Like the yin-yang — strength without arrogance, ambition without blindness. The
+                    particle animation above isn't decoration. It's a philosophy I actually live by.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ ART BREAK 4 — TORUS FLOW ══ -->
+    <div class="art-break">
+        <div class="art-label">— Pattern IV · Eternal Return</div>
+        <canvas id="torusCanvas" width="1200" height="340"></canvas>
+        <div class="art-caption">"Particles flow in an eternal cycle, always returning to their origin. Source follows
+            itself."</div>
+    </div>
+
+    <!-- ══ HOBBIES ══ -->
+    <div style="border-bottom:1px solid var(--border);">
+        <div class="page-section">
+            <div class="section-top r"><span class="section-index">05</span><span class="section-name">Interests &
+                    Hobbies</span><span class="section-line"></span></div>
+            <div class="hobbies-row r">
+                <div class="hobby">⚔️ Anime — FMAB</div>
+                <div class="hobby">📖 Manga</div>
+                <div class="hobby">🎮 Gaming</div>
+                <div class="hobby">🤖 Robotics</div>
+                <div class="hobby">🎨 3D & Creative Art</div>
+                <div class="hobby">🔷 Blender</div>
+                <div class="hobby">🎯 Unity</div>
+                <div class="hobby">🧠 Philosophy</div>
+                <div class="hobby">🌌 Futurism</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ VISION ══ -->
+    <div style="border-bottom:1px solid var(--border);">
+        <div class="page-section">
+            <div class="section-top r"><span class="section-index">06</span><span class="section-name">Vision &
+                    Goals</span><span class="section-line"></span></div>
+            <p class="vision-big r">
+                I want to build the most <em>realistic, human-like AI</em> the world has ever seen.<br><br>
+                I want my work to outlive me —<br><strong>software that helps people who haven't been born
+                    yet.</strong><br><br>
+                I want to be the kind of engineer whose <em>name means something.</em>
+            </p>
+        </div>
+    </div>
+
+    <!-- ══ CONTACT ══ -->
+    <div id="contact">
+        <div class="page-section">
+            <div class="section-top r"><span class="section-index">07</span><span
+                    class="section-name">Contact</span><span class="section-line"></span></div>
+            <h2 class="contact-h r">Let's build<br><em>something that</em><br>matters.</h2>
+            <div class="contact-links r r2">
+                <a href="https://github.com/venkateshannabathina" target="_blank" class="c-link">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+                    </svg>
+                    GitHub
+                </a>
+                <a href="https://linkedin.com/in/venkatesh-annabathina" target="_blank" class="c-link">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                    </svg>
+                    LinkedIn
+                </a>
+                <a href="https://huggingface.co/venkateshannabathina" target="_blank" class="c-link">🤗 HuggingFace</a>
+            </div>
+            <a href="mailto:venkateshannabathina96@gmail.com" class="c-email r r3">venkateshannabathina96@gmail.com</a>
+        </div>
+    </div>
+
+    <footer>
+        <span class="f-copy">© 2026 Venkatesh Annabathina</span>
+        <span class="f-brand">keyvenslab</span>
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const navbar = document.getElementById('navbar');
-            const revealElements = document.querySelectorAll('.scroll-reveal');
+        // ═══════════════════════════════════════════
+        // CURSOR
+        // ═══════════════════════════════════════════
+        const cur = document.getElementById('cur');
+        const curR = document.getElementById('cur-r');
+        let mx = 0, my = 0, rx = 0, ry = 0;
+        document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+        (function loop() {
+            rx += (mx - rx) * .1; ry += (my - ry) * .1;
+            cur.style.left = mx + 'px'; cur.style.top = my + 'px';
+            curR.style.left = rx + 'px'; curR.style.top = ry + 'px';
+            requestAnimationFrame(loop);
+        })();
 
-            // Add a background to the navbar when the user scrolls
-            const handleScroll = () => {
-                if (window.scrollY > 50) {
-                    navbar.classList.add('bg-black/50', 'backdrop-blur-lg');
-                } else {
-                    navbar.classList.remove('bg-black/50', 'backdrop-blur-lg');
-                }
-            };
-            window.addEventListener('scroll', handleScroll, { passive: true });
-
-            // Intersection Observer to fade in elements on scroll
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target); // Stop observing after it's visible
-                    }
-                });
-            }, {
-                threshold: 0.1
-            });
-
-            revealElements.forEach(el => {
-                observer.observe(el);
-            });
+        // ═══════════════════════════════════════════
+        // GSAP HERO
+        // ═══════════════════════════════════════════
+        gsap.registerPlugin(ScrollTrigger);
+        const tl = gsap.timeline({
+            scrollTrigger: { trigger: '.hero-wrapper', start: 'top top', end: 'bottom bottom', scrub: 1 }
         });
+        tl.to('.v-char', { y: '-15vh', duration: 2, ease: 'power2.inOut' }, 'start')
+            .to('.a-char', { y: '15vh', duration: 2, ease: 'power2.inOut' }, 'start')
+            .to('.name-reveal', { opacity: 1, duration: 1.5, ease: 'power2.inOut' }, 'start+=.5');
+        tl.to('.main-container', { scale: 2.2, opacity: .05, duration: 3, ease: 'expo.inOut' }, 'zoom')
+            .to('.name-reveal', { opacity: 0, duration: 1 }, 'zoom');
+        tl.to('.quote-center', { opacity: 1, y: 0, duration: 2, ease: 'power3.out' }, 'zoom+=1');
+        tl.to('.hero-btns', { opacity: 1, y: 0, duration: 2, ease: 'power4.out' }, '-=1');
+
+        // ═══════════════════════════════════════════
+        // SCROLL REVEAL
+        // ═══════════════════════════════════════════
+        const io = new IntersectionObserver(es => {
+            es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+        }, { threshold: .1 });
+        document.querySelectorAll('.r').forEach(el => io.observe(el));
+
+        // ═══════════════════════════════════════════
+        // ART 1 — VERTICAL BARS (full width)
+        // ═══════════════════════════════════════════
+        (function () {
+            const canvas = document.getElementById('barsCanvas');
+            const ctx = canvas.getContext('2d');
+            // Make full browser width
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = 320;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            const numLines = 80;
+            let scrollPos = 0;
+
+            function createPattern(offset) {
+                const pattern = [];
+                for (let i = 0; i < numLines; i++) {
+                    const bars = [];
+                    const numBars = 10 + Math.sin(i * .3 + offset) * 5;
+                    for (let j = 0; j < numBars; j++) {
+                        bars.push({
+                            y: (j / numBars) * canvas.height + Math.sin(i * .5 + j * .3 + offset) * 25,
+                            height: 4 + Math.sin(i * .2 + j * .4) * 3,
+                            width: 1.5 + Math.cos(i * .3) * 1.5
+                        });
+                    }
+                    pattern.push(bars);
+                }
+                return pattern;
+            }
+
+            const p1 = createPattern(0);
+            const p2 = createPattern(Math.PI);
+
+            function draw() {
+                scrollPos += .0018;
+                const sf = (Math.sin(scrollPos) + 1) / 2;
+                ctx.fillStyle = '#F0EEE6';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                const spacing = canvas.width / numLines;
+                for (let i = 0; i < numLines; i++) {
+                    const x = i * spacing + spacing / 2;
+                    ctx.beginPath(); ctx.strokeStyle = 'rgba(100,100,100,.35)'; ctx.lineWidth = .8;
+                    ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+                    const b1 = p1[i], b2 = p2[i], maxB = Math.max(b1.length, b2.length);
+                    for (let j = 0; j < maxB; j++) {
+                        const bar1 = b1[j] || b2[j], bar2 = b2[j] || b1[j];
+                        const y = bar1.y + (bar2.y - bar1.y) * sf;
+                        const h = bar1.height + (bar2.height - bar1.height) * sf;
+                        const w = bar1.width + (bar2.width - bar1.width) * sf;
+                        ctx.fillStyle = 'rgba(30,30,30,.75)';
+                        ctx.fillRect(x - w / 2, y - h / 2, w, h);
+                    }
+                }
+                requestAnimationFrame(draw);
+            }
+            draw();
+        })();
+
+        // ═══════════════════════════════════════════
+        // ART 2 — WAVY YIN YANG (full width)
+        // ═══════════════════════════════════════════
+        (function () {
+            const canvas = document.getElementById('yinCanvas');
+            const ctx = canvas.getContext('2d');
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = 380;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            const maxR = 140;
+            let time = 0;
+
+            function draw() {
+                ctx.fillStyle = '#F0EEE6';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                const cx = canvas.width / 2, cy = canvas.height / 2;
+                for (let r = 4; r < maxR; r += 2.5) {
+                    ctx.beginPath();
+                    let first = true;
+                    for (let angle = 0; angle < Math.PI * 2; angle += 0.018) {
+                        const wave = Math.sin(angle * 8 + r * .1 + time) * 1.8;
+                        const x = cx + (r + wave) * Math.cos(angle);
+                        const y = cy + (r + wave) * Math.sin(angle);
+                        const isYin = (angle > Math.PI) ?
+                            (Math.sqrt((x - cx) ** 2 + (y - (cy + maxR / 4)) ** 2) < maxR / 4) :
+                            (Math.sqrt((x - cx) ** 2 + (y - (cy - maxR / 4)) ** 2) > maxR / 4);
+                        ctx.strokeStyle = isYin ? 'rgba(0,0,0,.18)' : 'rgba(0,0,0,.7)';
+                        if (first) { ctx.moveTo(x, y); first = false; }
+                        else ctx.lineTo(x, y);
+                    }
+                    ctx.lineWidth = .7;
+                    ctx.stroke();
+                }
+                time += .012;
+                requestAnimationFrame(draw);
+            }
+            draw();
+        })();
+
+        // ═══════════════════════════════════════════
+        // ART 3 — GLOWING EYE / YIN-YANG PARTICLES
+        // ═══════════════════════════════════════════
+        (function () {
+            const canvas = document.getElementById('eyeCanvas');
+            const ctx = canvas.getContext('2d');
+            const W = 480, H = 480, cx = W / 2, cy = H / 2, R = W * .35;
+            canvas.width = W; canvas.height = H;
+            const COUNT = 18000;
+            const P = [];
+            for (let i = 0; i < COUNT; i++) {
+                const side = i < COUNT / 2 ? 'dark' : 'light';
+                const ang = Math.random() * Math.PI * 2;
+                const r = Math.sqrt(Math.random()) * R;
+                const ia = side === 'dark' ? (ang < Math.PI ? ang : ang - Math.PI) : (ang >= Math.PI ? ang : ang + Math.PI);
+                P.push({ x: cx + Math.cos(ia) * r, y: cy + Math.sin(ia) * r, side, ia, ir: r, cp: Math.random() * Math.PI * 2, cs: .005 + Math.random() * .005, sz: .3 + Math.random() * .4, tx: cx, ty: cy });
+            }
+            let t = 0, last = 0;
+            function frame(now) {
+                requestAnimationFrame(frame);
+                if (now - last < 55) return;
+                t += .008; last = now;
+                ctx.fillStyle = 'rgba(240,238,230,.12)';
+                ctx.fillRect(0, 0, W, H);
+                for (const p of P) {
+                    p.cp += p.cs;
+                    const cc = Math.sin(p.cp);
+                    if (cc > 0) {
+                        const d = Math.hypot(p.x - cx, p.y - cy);
+                        p.x += (cx - p.x) * .02 * cc * (d / R);
+                        p.y += (cy - p.y) * .02 * cc * (d / R);
+                    } else {
+                        const tp = Math.abs(cc);
+                        const na = p.ia + Math.PI;
+                        const sc = Math.sin(na * 2) * R * .5;
+                        const ca = na + (sc / Math.max(p.ir, 1)) * tp;
+                        p.tx = cx + Math.cos(ca) * p.ir; p.ty = cy + Math.sin(ca) * p.ir;
+                        p.x += (p.tx - p.x) * .03 * tp; p.y += (p.ty - p.y) * .03 * tp;
+                    }
+                    let col, al;
+                    if (cc > 0) { col = p.side === 'dark' ? '20,20,20' : '90,90,90'; al = .3 * cc; }
+                    else { const tp = Math.abs(cc); col = p.side === 'dark' ? `${20 + tp * 70},${20 + tp * 70},${20 + tp * 70}` : `${90 - tp * 70},${90 - tp * 70},${90 - tp * 70}`; al = .3 * tp; }
+                    const dc = Math.hypot(p.x - cx, p.y - cy);
+                    if (dc < R * .2) al += (1 - dc / (R * .2)) * .15;
+                    ctx.beginPath(); ctx.arc(p.x, p.y, p.sz, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${col},${al})`; ctx.fill();
+                }
+                const g = Math.sin(t * .1) * .5 + .5;
+                ctx.beginPath(); ctx.arc(cx, cy, 2 + g * 3, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(51,51,51,${.1 + g * .2})`; ctx.fill();
+            }
+            requestAnimationFrame(frame);
+        })();
+
+        // ═══════════════════════════════════════════
+        // ART 4 — TORUS FLOW (full width)
+        // ═══════════════════════════════════════════
+        (function () {
+            const canvas = document.getElementById('torusCanvas');
+            const ctx = canvas.getContext('2d');
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = 340;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            const NUM = 7000;
+            const particles = [];
+            let time = 0;
+
+            class TP {
+                constructor() { this.reset(); }
+                reset() {
+                    this.u = Math.random() * Math.PI * 2;
+                    this.v = Math.random() * Math.PI * 2;
+                    this.R = 100; this.r = 45 + Math.random() * 25;
+                    this.size = Math.random() * 1.2 + .4;
+                    this.opacity = Math.random() * .7 + .2;
+                    this.speed = Math.random() * .0018 + .0004;
+                    this.phase = Math.random() * Math.PI * 2;
+                }
+                update() {
+                    this.u += this.speed;
+                    this.r += Math.sin(time + this.phase) * .04;
+                    const x = (this.R + this.r * Math.cos(this.v)) * Math.cos(this.u);
+                    const y = (this.R + this.r * Math.cos(this.v)) * Math.sin(this.u);
+                    const z = this.r * Math.sin(this.v);
+                    const scale = 800 / (800 + z);
+                    this.sx = x * scale + canvas.width / 2;
+                    this.sy = y * scale + canvas.height / 2;
+                    this.ds = this.size * scale;
+                    this.da = this.opacity * (.5 + .5 * Math.sin(this.u));
+                }
+                draw() {
+                    ctx.fillStyle = `rgba(35,35,35,${this.da})`;
+                    ctx.beginPath(); ctx.arc(this.sx, this.sy, this.ds, 0, Math.PI * 2); ctx.fill();
+                }
+            }
+            for (let i = 0; i < NUM; i++) particles.push(new TP());
+
+            let last = 0;
+            function draw(now) {
+                requestAnimationFrame(draw);
+                if (now - last < 50) return; last = now;
+                ctx.fillStyle = 'rgba(240,238,230,.04)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                time += .004;
+                particles.forEach(p => { p.update(); p.draw(); });
+            }
+            requestAnimationFrame(draw);
+        })();
     </script>
 </body>
+
 </html>
